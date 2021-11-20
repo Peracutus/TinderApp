@@ -10,9 +10,11 @@
 		B51277082749295900E7AC05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51277072749295900E7AC05 /* AppDelegate.swift */; };
 		B512770A2749295900E7AC05 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51277092749295900E7AC05 /* SceneDelegate.swift */; };
 		B512770C2749295900E7AC05 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B512770B2749295900E7AC05 /* ViewController.swift */; };
-		B512770F2749295900E7AC05 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B512770D2749295900E7AC05 /* Main.storyboard */; };
 		B51277112749295A00E7AC05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B51277102749295A00E7AC05 /* Assets.xcassets */; };
 		B51277142749295A00E7AC05 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51277122749295A00E7AC05 /* LaunchScreen.storyboard */; };
+		B512771F2749326B00E7AC05 /* UIViewExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = B512771E2749326B00E7AC05 /* UIViewExtention.swift */; };
+		B5127722274937F200E7AC05 /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5127721274937F200E7AC05 /* HomeBottomControlsStackView.swift */; };
+		B5127724274947C200E7AC05 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5127723274947C200E7AC05 /* TopNavigationStackView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +22,12 @@
 		B51277072749295900E7AC05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B51277092749295900E7AC05 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B512770B2749295900E7AC05 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B512770E2749295900E7AC05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B51277102749295A00E7AC05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B51277132749295A00E7AC05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B51277152749295A00E7AC05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B512771E2749326B00E7AC05 /* UIViewExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtention.swift; sourceTree = "<group>"; };
+		B5127721274937F200E7AC05 /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
+		B5127723274947C200E7AC05 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +60,33 @@
 		B51277062749295900E7AC05 /* TinderApp */ = {
 			isa = PBXGroup;
 			children = (
+				B51277202749378A00E7AC05 /* Views */,
+				B512771B27492B5500E7AC05 /* Extentions */,
 				B51277072749295900E7AC05 /* AppDelegate.swift */,
 				B51277092749295900E7AC05 /* SceneDelegate.swift */,
 				B512770B2749295900E7AC05 /* ViewController.swift */,
-				B512770D2749295900E7AC05 /* Main.storyboard */,
 				B51277102749295A00E7AC05 /* Assets.xcassets */,
 				B51277122749295A00E7AC05 /* LaunchScreen.storyboard */,
 				B51277152749295A00E7AC05 /* Info.plist */,
 			);
 			path = TinderApp;
+			sourceTree = "<group>";
+		};
+		B512771B27492B5500E7AC05 /* Extentions */ = {
+			isa = PBXGroup;
+			children = (
+				B512771E2749326B00E7AC05 /* UIViewExtention.swift */,
+			);
+			path = Extentions;
+			sourceTree = "<group>";
+		};
+		B51277202749378A00E7AC05 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B5127723274947C200E7AC05 /* TopNavigationStackView.swift */,
+				B5127721274937F200E7AC05 /* HomeBottomControlsStackView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +149,6 @@
 			files = (
 				B51277142749295A00E7AC05 /* LaunchScreen.storyboard in Resources */,
 				B51277112749295A00E7AC05 /* Assets.xcassets in Resources */,
-				B512770F2749295900E7AC05 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,21 +161,16 @@
 			files = (
 				B512770C2749295900E7AC05 /* ViewController.swift in Sources */,
 				B51277082749295900E7AC05 /* AppDelegate.swift in Sources */,
+				B5127722274937F200E7AC05 /* HomeBottomControlsStackView.swift in Sources */,
+				B5127724274947C200E7AC05 /* TopNavigationStackView.swift in Sources */,
 				B512770A2749295900E7AC05 /* SceneDelegate.swift in Sources */,
+				B512771F2749326B00E7AC05 /* UIViewExtention.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		B512770D2749295900E7AC05 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				B512770E2749295900E7AC05 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		B51277122749295A00E7AC05 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -294,7 +310,6 @@
 				INFOPLIST_FILE = TinderApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -306,7 +321,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -322,7 +337,6 @@
 				INFOPLIST_FILE = TinderApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -334,7 +348,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
