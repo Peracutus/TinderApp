@@ -9,25 +9,29 @@
 /* Begin PBXBuildFile section */
 		B51277082749295900E7AC05 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51277072749295900E7AC05 /* AppDelegate.swift */; };
 		B512770A2749295900E7AC05 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51277092749295900E7AC05 /* SceneDelegate.swift */; };
-		B512770C2749295900E7AC05 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B512770B2749295900E7AC05 /* ViewController.swift */; };
+		B512770C2749295900E7AC05 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B512770B2749295900E7AC05 /* MainController.swift */; };
 		B51277112749295A00E7AC05 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B51277102749295A00E7AC05 /* Assets.xcassets */; };
 		B51277142749295A00E7AC05 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51277122749295A00E7AC05 /* LaunchScreen.storyboard */; };
 		B512771F2749326B00E7AC05 /* UIViewExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = B512771E2749326B00E7AC05 /* UIViewExtention.swift */; };
 		B5127722274937F200E7AC05 /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5127721274937F200E7AC05 /* HomeBottomControlsStackView.swift */; };
 		B5127724274947C200E7AC05 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5127723274947C200E7AC05 /* TopNavigationStackView.swift */; };
+		B5127726274950B500E7AC05 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5127725274950B500E7AC05 /* CardView.swift */; };
+		B5127729274A553000E7AC05 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5127728274A553000E7AC05 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B51277042749295900E7AC05 /* TinderApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B51277072749295900E7AC05 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B51277092749295900E7AC05 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B512770B2749295900E7AC05 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B512770B2749295900E7AC05 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 		B51277102749295A00E7AC05 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B51277132749295A00E7AC05 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B51277152749295A00E7AC05 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B512771E2749326B00E7AC05 /* UIViewExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtention.swift; sourceTree = "<group>"; };
 		B5127721274937F200E7AC05 /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
 		B5127723274947C200E7AC05 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
+		B5127725274950B500E7AC05 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		B5127728274A553000E7AC05 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,11 +64,12 @@
 		B51277062749295900E7AC05 /* TinderApp */ = {
 			isa = PBXGroup;
 			children = (
+				B5127727274A551B00E7AC05 /* Model */,
 				B51277202749378A00E7AC05 /* Views */,
 				B512771B27492B5500E7AC05 /* Extentions */,
 				B51277072749295900E7AC05 /* AppDelegate.swift */,
 				B51277092749295900E7AC05 /* SceneDelegate.swift */,
-				B512770B2749295900E7AC05 /* ViewController.swift */,
+				B512770B2749295900E7AC05 /* MainController.swift */,
 				B51277102749295A00E7AC05 /* Assets.xcassets */,
 				B51277122749295A00E7AC05 /* LaunchScreen.storyboard */,
 				B51277152749295A00E7AC05 /* Info.plist */,
@@ -85,8 +90,17 @@
 			children = (
 				B5127723274947C200E7AC05 /* TopNavigationStackView.swift */,
 				B5127721274937F200E7AC05 /* HomeBottomControlsStackView.swift */,
+				B5127725274950B500E7AC05 /* CardView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B5127727274A551B00E7AC05 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B5127728274A553000E7AC05 /* User.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -159,9 +173,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B512770C2749295900E7AC05 /* ViewController.swift in Sources */,
+				B5127726274950B500E7AC05 /* CardView.swift in Sources */,
+				B512770C2749295900E7AC05 /* MainController.swift in Sources */,
 				B51277082749295900E7AC05 /* AppDelegate.swift in Sources */,
 				B5127722274937F200E7AC05 /* HomeBottomControlsStackView.swift in Sources */,
+				B5127729274A553000E7AC05 /* User.swift in Sources */,
 				B5127724274947C200E7AC05 /* TopNavigationStackView.swift in Sources */,
 				B512770A2749295900E7AC05 /* SceneDelegate.swift in Sources */,
 				B512771F2749326B00E7AC05 /* UIViewExtention.swift in Sources */,
