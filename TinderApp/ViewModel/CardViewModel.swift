@@ -8,19 +8,12 @@
 import UIKit
 
 protocol ProducesCardViewModel {
-    func toCardViewModel() -> CardViewModel 
-        
-//        let attributedText = NSMutableAttributedString(string: name, attributes: [.font: UIFont.systemFont(ofSize: 34, weight: .heavy)])
-//        attributedText.append(NSAttributedString(string: " \(age)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .light)]))
-//        attributedText.append(NSAttributedString(string: "\n\(profession)", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .medium)]))
-//        
-//        return CardViewModel(imageName: imageName, attributedString: attributedText, textAlignment: .left)
-//    
+    func toCardViewModel() -> CardViewModel
 }
 
 struct CardViewModel {
     
-    let imageName: String
+    let imageNames: [String]
     let attributedString: NSAttributedString
     let textAlignment: NSTextAlignment
     

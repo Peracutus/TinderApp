@@ -11,9 +11,19 @@ class CardView: UIView {
     
     var cardViewModel: CardViewModel! {
         didSet {
-            imageView.image = UIImage(named: cardViewModel.imageName)
+            
+            let imageName = cardViewModel.imageNames.first ?? ""
+            imageView.image = UIImage(named: imageName)
             infoLabel.attributedText = cardViewModel.attributedString
             infoLabel.textAlignment = cardViewModel.textAlignment
+            
+            (0..<cardViewModel.imageNames.count).forEach { (_) in
+                let barView = UIView()
+                barView.backgroundColor = barDeselectedColor
+                //barView.backgroundColor = .white
+                barsStackView.addArrangedSubview(barView)
+            }
+            barsStackView.arrangedSubviews.first?.backgroundColor = .white
         }
     }
     
@@ -29,9 +39,31 @@ class CardView: UIView {
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         addGestureRecognizer(panGesture)
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
+    }
+    
+    var imageIndex = 0
+    fileprivate let barDeselectedColor = UIColor(white: 0, alpha: 0.1)
+    
+    @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
+        let tapLocation = gesture.location(in: nil)
+        let shouldAdvanceNextPhoto = tapLocation.x > frame.width / 2  ? true : false
+        if shouldAdvanceNextPhoto {
+            imageIndex = min(imageIndex + 1, cardViewModel.imageNames.count - 1)
+        } else {
+            imageIndex = max(0, imageIndex - 1)
+        }
+        
+        let imageName = cardViewModel.imageNames[imageIndex]
+        imageView.image = UIImage(named: imageName)
+        barsStackView.arrangedSubviews.forEach { (v) in
+            v.backgroundColor = barDeselectedColor
+        }
+        barsStackView.arrangedSubviews[imageIndex].backgroundColor = .white
     }
     
     fileprivate func setupLayout() {
+        //customizating
         layer.cornerRadius = 10
         clipsToBounds = true
         
@@ -39,12 +71,24 @@ class CardView: UIView {
         imageView.fillSuperview()
         imageView.contentMode = .scaleAspectFill
         
-        setupGradientLayer()
+        setupBarStackView() // add bar stack
+        setupGradientLayer() // add gradient layer
         
         addSubview(infoLabel)
         infoLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
         infoLabel.textColor = .white
         infoLabel.numberOfLines = 0
+    }
+    
+    fileprivate let barsStackView = UIStackView()
+    
+    fileprivate func setupBarStackView() {
+        addSubview(barsStackView)
+        barsStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil , trailing: trailingAnchor, padding: .init(top: 8, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))
+        
+        barsStackView.spacing = 4
+        barsStackView.distribution = .fillEqually
+        
     }
     
     fileprivate func setupGradientLayer() {
@@ -78,10 +122,10 @@ class CardView: UIView {
         let translation = gesture.translation(in: nil) //shows image location by swiping
         //rotation with bug
         
-//        let degrees: CGFloat = translation.x / 20
-//        let angle = degrees * .pi / 180
-//        let rotationalTransformation = CGAffineTransform(rotationAngle: angle)
-//        self.transform = rotationalTransformation.translatedBy(x: translation.x, y: translation.y)
+        //        let degrees: CGFloat = translation.x / 20
+        //        let angle = degrees * .pi / 180
+        //        let rotationalTransformation = CGAffineTransform(rotationAngle: angle)
+        //        self.transform = rotationalTransformation.translatedBy(x: translation.x, y: translation.y)
         
         self.transform = CGAffineTransform(translationX: translation.x, y: translation.y)
     }
@@ -106,12 +150,10 @@ class CardView: UIView {
             if shouldDismissCard {
                 self.removeFromSuperview()
             }
-            //            self.frame = CGRect(x: 0, y: 0, width: self.superview!.frame.width, height: self.superview!.frame.height)
         }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
