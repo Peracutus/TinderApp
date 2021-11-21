@@ -17,6 +17,7 @@
 		B5127724274947C200E7AC05 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5127723274947C200E7AC05 /* TopNavigationStackView.swift */; };
 		B5127726274950B500E7AC05 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5127725274950B500E7AC05 /* CardView.swift */; };
 		B5127729274A553000E7AC05 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5127728274A553000E7AC05 /* User.swift */; };
+		B5635D81274A8030003FCCE2 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5635D80274A8030003FCCE2 /* CardViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		B5127723274947C200E7AC05 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		B5127725274950B500E7AC05 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		B5127728274A553000E7AC05 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		B5635D80274A8030003FCCE2 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,12 +66,13 @@
 		B51277062749295900E7AC05 /* TinderApp */ = {
 			isa = PBXGroup;
 			children = (
+				B5635D7F274A8012003FCCE2 /* ViewModel */,
+				B5635D7E274A7DE4003FCCE2 /* Controllers */,
 				B5127727274A551B00E7AC05 /* Model */,
 				B51277202749378A00E7AC05 /* Views */,
 				B512771B27492B5500E7AC05 /* Extentions */,
 				B51277072749295900E7AC05 /* AppDelegate.swift */,
 				B51277092749295900E7AC05 /* SceneDelegate.swift */,
-				B512770B2749295900E7AC05 /* MainController.swift */,
 				B51277102749295A00E7AC05 /* Assets.xcassets */,
 				B51277122749295A00E7AC05 /* LaunchScreen.storyboard */,
 				B51277152749295A00E7AC05 /* Info.plist */,
@@ -101,6 +104,22 @@
 				B5127728274A553000E7AC05 /* User.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B5635D7E274A7DE4003FCCE2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B512770B2749295900E7AC05 /* MainController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		B5635D7F274A8012003FCCE2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B5635D80274A8030003FCCE2 /* CardViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,6 +200,7 @@
 				B5127724274947C200E7AC05 /* TopNavigationStackView.swift in Sources */,
 				B512770A2749295900E7AC05 /* SceneDelegate.swift in Sources */,
 				B512771F2749326B00E7AC05 /* UIViewExtention.swift in Sources */,
+				B5635D81274A8030003FCCE2 /* CardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

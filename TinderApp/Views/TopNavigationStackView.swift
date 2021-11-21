@@ -8,10 +8,6 @@
 import UIKit
 
 class TopNavigationStackView: UIStackView {
-    
-    let settingsButton = UIButton(type: .system)
-    let messageButton = UIButton(type: .system)
-  //.  let fireImageView = UIImageView(image: .init(imageLiteralResourceName: <#T##String#>))
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,12 +28,9 @@ class TopNavigationStackView: UIStackView {
         topImages.forEach { (v) in
             addArrangedSubview(v)
         }
-        
     }
-    
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }

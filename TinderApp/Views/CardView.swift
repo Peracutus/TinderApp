@@ -54,8 +54,6 @@ class CardView: UIView {
         //self.transform = rotationalTransformation.translatedBy(x: translation.x, y: translation.y)
         //self.frame = CGRect(x: translation.x, y: translation.y, width: self.superview!.frame.width, height: self.superview!.frame.height)
         
-        
-        
         self.transform = CGAffineTransform(translationX: translation.x, y: translation.y)
     }
     
