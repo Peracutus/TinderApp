@@ -19,6 +19,8 @@
 		B5127729274A553000E7AC05 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5127728274A553000E7AC05 /* User.swift */; };
 		B5635D81274A8030003FCCE2 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5635D80274A8030003FCCE2 /* CardViewModel.swift */; };
 		B5635D83274A9852003FCCE2 /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5635D82274A9852003FCCE2 /* Advertiser.swift */; };
+		B5635D85274E4814003FCCE2 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5635D84274E4814003FCCE2 /* RegistrationController.swift */; };
+		B5635D87274E5330003FCCE2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5635D86274E532F003FCCE2 /* CustomTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		B5127728274A553000E7AC05 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B5635D80274A8030003FCCE2 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		B5635D82274A9852003FCCE2 /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
+		B5635D84274E4814003FCCE2 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
+		B5635D86274E532F003FCCE2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,7 @@
 				B5127723274947C200E7AC05 /* TopNavigationStackView.swift */,
 				B5127721274937F200E7AC05 /* HomeBottomControlsStackView.swift */,
 				B5127725274950B500E7AC05 /* CardView.swift */,
+				B5635D86274E532F003FCCE2 /* CustomTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -113,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				B512770B2749295900E7AC05 /* MainController.swift */,
+				B5635D84274E4814003FCCE2 /* RegistrationController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -201,7 +207,9 @@
 				B51277082749295900E7AC05 /* AppDelegate.swift in Sources */,
 				B5127722274937F200E7AC05 /* HomeBottomControlsStackView.swift in Sources */,
 				B5127729274A553000E7AC05 /* User.swift in Sources */,
+				B5635D85274E4814003FCCE2 /* RegistrationController.swift in Sources */,
 				B5127724274947C200E7AC05 /* TopNavigationStackView.swift in Sources */,
+				B5635D87274E5330003FCCE2 /* CustomTextField.swift in Sources */,
 				B512770A2749295900E7AC05 /* SceneDelegate.swift in Sources */,
 				B512771F2749326B00E7AC05 /* UIViewExtention.swift in Sources */,
 				B5635D81274A8030003FCCE2 /* CardViewModel.swift in Sources */,

@@ -39,6 +39,7 @@ class CardView: UIView {
             self?.barsStackView.arrangedSubviews[idx].backgroundColor = .white
         }
     }
+    
     //encapsulation pattern from OOP
     fileprivate let imageView = UIImageView(image: UIImage(named: "girl_2"))
     fileprivate let infoLabel = UILabel()
