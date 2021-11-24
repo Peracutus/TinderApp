@@ -86,8 +86,17 @@ class RegistrationController: UIViewController {
         self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if self.traitCollection.verticalSizeClass == .compact {
+            stackView.axis = .horizontal
+        } else {
+            stackView.axis = .vertical
+        }
+    }
+    
     fileprivate func setupLayout() {
         stackView.axis = .vertical
+        selectImageButton.widthAnchor.constraint(equalToConstant: 275).isActive = true
         passwordTextField.isSecureTextEntry = true
         stackView.spacing = 10
         view.addSubview(stackView)
@@ -95,20 +104,38 @@ class RegistrationController: UIViewController {
         stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
+    lazy var verticalStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [
+            nameTextField,
+            emailTextField,
+            passwordTextField,
+            registrationButton])
+        sv.spacing = 10
+        sv.axis = .vertical
+        sv.distribution = .fillEqually
+        return sv
+                             
+    }()
+    
     lazy var stackView = UIStackView(arrangedSubviews: [selectImageButton,
-                                                        nameTextField,
-                                                        emailTextField,
-                                                        passwordTextField,
-                                                        registrationButton])
+                                                        verticalStackView])
+   
+    
+        //MARK: - create gradient layer with rotation changing
+    fileprivate let gradientLayer = CAGradientLayer()
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        gradientLayer.frame = view.bounds
+    }
     
     fileprivate func setupGradientLayer() {
-        let gradientLayer = CAGradientLayer()
+        
         let topColor = UIColor.orange
         let bottomColor = UIColor.red
         
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
         gradientLayer.locations = [0, 1]
         view.layer.addSublayer(gradientLayer)
-        gradientLayer.frame = view.bounds
     }
 }
