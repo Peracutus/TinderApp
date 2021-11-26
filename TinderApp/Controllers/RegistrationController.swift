@@ -27,13 +27,16 @@ class RegistrationController: UIViewController {
     let registrationButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Register", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.layer.cornerRadius = 25
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        button.backgroundColor = UIColor.init(red: 1, green: 170/255, blue: 0, alpha: 1)
+        button.backgroundColor = .systemGray
+        button.isEnabled = false
         return button
     }()
+    
+    fileprivate let registrationViewModel = RegistrationViewModel()
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -46,9 +49,9 @@ class RegistrationController: UIViewController {
         setupGradientLayer()
         
         setupLayout()
-        setupNatificationObserver()
         setupTapGesture()
-        
+        setupNatificationObserver()
+        setupRegistrationViewModelObserver()
     }
      
     //MARK: - Fileprivate
@@ -95,6 +98,7 @@ class RegistrationController: UIViewController {
     }
     
     fileprivate func setupLayout() {
+        
         stackView.axis = .vertical
         selectImageButton.widthAnchor.constraint(equalToConstant: 275).isActive = true
         passwordTextField.isSecureTextEntry = true
@@ -103,6 +107,37 @@ class RegistrationController: UIViewController {
         stackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
+    
+    @objc fileprivate func handleVarifiedEmptyField( textField: UITextField) {
+        
+        if textField == nameTextField {
+            registrationViewModel.fullName = textField.text
+        } else if textField == emailTextField {
+            registrationViewModel.email = textField.text
+        } else {
+            registrationViewModel.password = textField.text
+        }
+    }
+    
+    fileprivate func setupRegistrationViewModelObserver() {
+        nameTextField.addTarget(self, action: #selector(handleVarifiedEmptyField), for: .editingChanged)
+        emailTextField.addTarget(self, action: #selector(handleVarifiedEmptyField), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(handleVarifiedEmptyField), for: .editingChanged)
+        
+        registrationViewModel.isFormValidObserver = { [unowned self] (isFormValid) in
+            
+            self.registrationButton.isEnabled = isFormValid
+            
+            if isFormValid {
+                self.registrationButton.backgroundColor = UIColor.init(red: 1, green: 170/255, blue: 0, alpha: 1)
+                self.registrationButton.setTitleColor(.white, for: .normal)
+            } else {
+                self.registrationButton.backgroundColor = .systemGray
+                self.registrationButton.setTitleColor(.black, for: .normal)
+            }
+        }
+    }
+    
     
     lazy var verticalStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [
@@ -114,7 +149,6 @@ class RegistrationController: UIViewController {
         sv.axis = .vertical
         sv.distribution = .fillEqually
         return sv
-                             
     }()
     
     lazy var stackView = UIStackView(arrangedSubviews: [selectImageButton,

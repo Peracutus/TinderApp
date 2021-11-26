@@ -73,6 +73,8 @@ class CardView: UIView {
         layer.cornerRadius = 10
         clipsToBounds = true
         
+        
+        
         addSubview(imageView)
         imageView.fillSuperview()
         imageView.contentMode = .scaleAspectFill
