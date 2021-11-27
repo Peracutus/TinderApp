@@ -8,6 +8,8 @@
 import UIKit
 
 class MainController: UIViewController {
+    
+    //MARK: - Views
 
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
@@ -23,6 +25,9 @@ class MainController: UIViewController {
         let viewModels = producers.map({return $0.toCardViewModel()})
         return viewModels
     }()
+    
+    
+    //MARK: - ViewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()

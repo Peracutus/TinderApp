@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import Firebase
+import JGProgressHUD
+import FirebaseStorage
 
 class RegistrationController: UIViewController {
+    
+    //MARK: - Views
     
     let selectImageButton: UIButton = {
         let button = UIButton(type: .system)
@@ -17,6 +22,9 @@ class RegistrationController: UIViewController {
         button.backgroundColor = .white
         button.setTitleColor(.black, for: .normal)
         button.layer.cornerRadius = 15
+        button.addTarget(self, action: #selector(handleSelectImage), for: .touchUpInside)
+        button.imageView?.contentMode = .scaleAspectFill
+        button.clipsToBounds = true
         return button
     }()
     
@@ -33,10 +41,27 @@ class RegistrationController: UIViewController {
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.backgroundColor = .systemGray
         button.isEnabled = false
+        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
         return button
     }()
     
-    fileprivate let registrationViewModel = RegistrationViewModel()
+    lazy var verticalStackView: UIStackView = {
+        let sv = UIStackView(arrangedSubviews: [
+            nameTextField,
+            emailTextField,
+            passwordTextField,
+            registrationButton])
+        sv.spacing = 10
+        sv.axis = .vertical
+        sv.distribution = .fillEqually
+        return sv
+    }()
+    
+    lazy var stackView = UIStackView(arrangedSubviews: [selectImageButton,
+                                                        verticalStackView])
+    
+    //MARK: - App lifeCycle
+    let registeringHUD = JGProgressHUD(style: .dark)
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -55,38 +80,10 @@ class RegistrationController: UIViewController {
     }
      
     //MARK: - Fileprivate
+    fileprivate let registrationViewModel = RegistrationViewModel()
     
     fileprivate func setupTapGesture() {
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapDismiss)))
-    }
-
-    @objc fileprivate func handleTapDismiss() {
-        self.view.endEditing(true) //dismisses keyboard
-       
-    }
-    
-    fileprivate func setupNatificationObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc fileprivate func handleKeyboardHide(notification: Notification) {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.view.transform = .identity
-        })
-    }
-    
-    @objc fileprivate func handleKeyboardShow(notification: Notification) {
-        // how tall the keyboard actually is? the code can find in google
-        guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
-        let keyboardFrame = value.cgRectValue
-        
-        //How to figure out how tall the gap is from register button to the bottom of the screen??
-        let bottomSpace = view.frame.height - stackView.frame.origin.y - stackView.frame.height
-        print(bottomSpace)
-        
-        let difference = keyboardFrame.height - bottomSpace
-        self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -119,13 +116,22 @@ class RegistrationController: UIViewController {
         }
     }
     
+    fileprivate func setupNatificationObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
     fileprivate func setupRegistrationViewModelObserver() {
         nameTextField.addTarget(self, action: #selector(handleVarifiedEmptyField), for: .editingChanged)
         emailTextField.addTarget(self, action: #selector(handleVarifiedEmptyField), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(handleVarifiedEmptyField), for: .editingChanged)
         
-        registrationViewModel.isFormValidObserver = { [unowned self] (isFormValid) in
+        
+        //FORM VALID
+        registrationViewModel.bindableIsFormValid.bind { [unowned self] (isFormValid) in
             
+            guard let isFormValid = isFormValid else { return }
+
             self.registrationButton.isEnabled = isFormValid
             
             if isFormValid {
@@ -136,26 +142,81 @@ class RegistrationController: UIViewController {
                 self.registrationButton.setTitleColor(.black, for: .normal)
             }
         }
+        
+        //IMAGE
+        registrationViewModel.bindableImage.bind { [unowned self] img in
+            self.selectImageButton.setImage(img?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        
+        //REGISTERING
+        registrationViewModel.bindableRegistrering.bind { [unowned self] (isRegistering) in
+            if isRegistering == true {
+                self.registeringHUD.textLabel.text = "Register"
+                self.registeringHUD.show(in: self.view)
+            } else {
+                self.registeringHUD.dismiss()
+                self.emailTextField.text?.removeAll()
+                self.passwordTextField.text?.removeAll()
+                self.nameTextField.text?.removeAll()
+            }
+        }
     }
     
+    //MARK: - Selectors
     
-    lazy var verticalStackView: UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [
-            nameTextField,
-            emailTextField,
-            passwordTextField,
-            registrationButton])
-        sv.spacing = 10
-        sv.axis = .vertical
-        sv.distribution = .fillEqually
-        return sv
-    }()
+    @objc fileprivate func handleSelectImage() {
+        let imagePicker = UIImagePickerController()
+        present(imagePicker, animated: true)
+        imagePicker.delegate = self
+    }
     
-    lazy var stackView = UIStackView(arrangedSubviews: [selectImageButton,
-                                                        verticalStackView])
-   
+    @objc fileprivate func handleRegister() {
+        self.handleTapDismiss()
+        
+        registrationViewModel.performRegistration { (err) in
+            if let err = err {
+            self.showHudWithError(error: err)
+            return
+            }
+            print("Finoshed registering user")
+        }
+    }
+    
+    fileprivate func showHudWithError(error: Error) {
+        registeringHUD.dismiss()
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Failed registration"
+        hud.detailTextLabel.text = error.localizedDescription
+        hud.show(in: self.view)
+        hud.dismiss(afterDelay: 4)
+    }
+
+    @objc fileprivate func handleTapDismiss() {
+        self.view.endEditing(true) //dismisses keyboard
+       
+    }
+    
+    @objc fileprivate func handleKeyboardHide(notification: Notification) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.view.transform = .identity
+        })
+    }
+    
+    @objc fileprivate func handleKeyboardShow(notification: Notification) {
+        // how tall the keyboard actually is? the code can find in google
+        guard let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {return}
+        let keyboardFrame = value.cgRectValue
+        
+        //How to figure out how tall the gap is from register button to the bottom of the screen??
+        let bottomSpace = view.frame.height - stackView.frame.origin.y - stackView.frame.height
+        print(bottomSpace)
+        
+        let difference = keyboardFrame.height - bottomSpace
+        self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
+    }
     
         //MARK: - create gradient layer with rotation changing
+    
     fileprivate let gradientLayer = CAGradientLayer()
     
     override func viewWillLayoutSubviews() {
@@ -171,5 +232,18 @@ class RegistrationController: UIViewController {
         gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
         gradientLayer.locations = [0, 1]
         view.layer.addSublayer(gradientLayer)
+    }
+}
+
+extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[.originalImage] as? UIImage
+        registrationViewModel.bindableImage.value = image
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true)
     }
 }

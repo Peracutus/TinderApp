@@ -24,6 +24,7 @@
 		B5635D87274E5330003FCCE2 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5635D86274E532F003FCCE2 /* CustomTextField.swift */; };
 		B595299D274FDA4F00434FC5 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B595299C274FDA4F00434FC5 /* RegistrationViewModel.swift */; };
 		B595299F2750E48200434FC5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B595299E2750E48100434FC5 /* GoogleService-Info.plist */; };
+		B59529A1275150BD00434FC5 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A0275150BD00434FC5 /* Bindable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		B5635D86274E532F003FCCE2 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		B595299C274FDA4F00434FC5 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		B595299E2750E48100434FC5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B59529A0275150BD00434FC5 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		D9C87C7D907DD72DC12EBA64 /* Pods_TinderApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinderApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF502B9C48F6E3540027774A /* Pods-TinderApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderApp.debug.xcconfig"; path = "Target Support Files/Pods-TinderApp/Pods-TinderApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,6 +142,7 @@
 			children = (
 				B512770B2749295900E7AC05 /* MainController.swift */,
 				B5635D84274E4814003FCCE2 /* RegistrationController.swift */,
+				B59529A0275150BD00434FC5 /* Bindable.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				B5127729274A553000E7AC05 /* User.swift in Sources */,
 				B5635D85274E4814003FCCE2 /* RegistrationController.swift in Sources */,
 				B5127724274947C200E7AC05 /* TopNavigationStackView.swift in Sources */,
+				B59529A1275150BD00434FC5 /* Bindable.swift in Sources */,
 				B595299D274FDA4F00434FC5 /* RegistrationViewModel.swift in Sources */,
 				B5635D87274E5330003FCCE2 /* CustomTextField.swift in Sources */,
 				B512770A2749295900E7AC05 /* SceneDelegate.swift in Sources */,
