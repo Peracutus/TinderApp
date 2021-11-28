@@ -149,7 +149,7 @@ class RegistrationController: UIViewController {
         }
         
         //REGISTERING
-        registrationViewModel.bindableRegistrering.bind { [unowned self] (isRegistering) in
+        registrationViewModel.bindableRegistering.bind { [unowned self] (isRegistering) in
             if isRegistering == true {
                 self.registeringHUD.textLabel.text = "Register"
                 self.registeringHUD.show(in: self.view)
@@ -173,9 +173,9 @@ class RegistrationController: UIViewController {
     @objc fileprivate func handleRegister() {
         self.handleTapDismiss()
         
-        registrationViewModel.performRegistration { (err) in
+        registrationViewModel.performRegistration { [weak self] (err) in
             if let err = err {
-            self.showHudWithError(error: err)
+            self?.showHudWithError(error: err)
             return
             }
             print("Finoshed registering user")
