@@ -72,7 +72,6 @@ class RegistrationController: UIViewController {
         super.viewDidLoad()
         
         setupGradientLayer()
-        
         setupLayout()
         setupTapGesture()
         setupNatificationObserver()
@@ -95,7 +94,7 @@ class RegistrationController: UIViewController {
     }
     
     fileprivate func setupLayout() {
-        
+
         stackView.axis = .vertical
         selectImageButton.widthAnchor.constraint(equalToConstant: 275).isActive = true
         passwordTextField.isSecureTextEntry = true
@@ -151,7 +150,7 @@ class RegistrationController: UIViewController {
         //REGISTERING
         registrationViewModel.bindableRegistering.bind { [unowned self] (isRegistering) in
             if isRegistering == true {
-                self.registeringHUD.textLabel.text = "Register"
+                self.registeringHUD.textLabel.text = "Registering"
                 self.registeringHUD.show(in: self.view)
             } else {
                 self.registeringHUD.dismiss()
@@ -178,7 +177,7 @@ class RegistrationController: UIViewController {
             self?.showHudWithError(error: err)
             return
             }
-            print("Finoshed registering user")
+            print("Finished registering user")
         }
     }
     
