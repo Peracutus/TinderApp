@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import Firebase
+import JGProgressHUD
+import SDWebImage
 
 class CustomImagePickerController: UIImagePickerController {
     
@@ -19,12 +22,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     lazy var headerImage2 = customButton(selector: #selector(handleSelectPhoto))
     lazy var headerImage3 = customButton(selector: #selector(handleSelectPhoto))
     
-    @objc fileprivate func handleSelectPhoto(button: UIButton) {
-        let imagePicker = CustomImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.imageButton = button
-        present(imagePicker, animated: true)
-    }
+    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let selectedPhoto = info[.originalImage] as? UIImage
@@ -33,9 +31,6 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         dismiss(animated: true)
     }
     
-    @objc fileprivate func handleCancel() {
-        dismiss(animated: true)
-    }
     
     //MARK: - Views
     
@@ -57,24 +52,58 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupTableView()
         setupNavigationItems()
-        tableView.register(SettingsCell.self, forCellReuseIdentifier: "settingsCell")
-        tableView.bounces = false
+        fetchCurrentUser()
+    }
+    
+    var user: User?
+    
+    fileprivate func fetchCurrentUser() {
+        //fetch firestore data
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            guard let dictionary = snapshot?.data()  else {return}
+            self.user = User(dictionary: dictionary)
+            self.loadUserPhoto()
+            
+            self.tableView.reloadData()
+        }
+    }
+    
+    fileprivate func loadUserPhoto() {
+        guard let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) else {return}
+        SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
+            self.headerImage1.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        //self.user?.imageUrl1
     }
     
     fileprivate func setupNavigationItems() {
-        
-        tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
-        tableView.separatorStyle = .none
-        tableView.keyboardDismissMode = .interactive
-        tableView.allowsSelection = false
         
         navigationItem.title = "Settings"
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(handleCancel))
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(handleCancel)),
+                                              UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave))]
         
+    }
+    
+    //MARK: - UITableView
+    
+    fileprivate func setupTableView() {
+        tableView.register(SettingsCell.self, forCellReuseIdentifier: "settingsCell")
+        tableView.bounces = false
+        tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .interactive
+        tableView.allowsSelection = false
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -85,6 +114,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     lazy var header: UIView = {
+        
         let header = UIView()
         header.addSubview(headerImage1)
         let padding: CGFloat = 16
@@ -134,27 +164,82 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         return 5
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        return 30
-    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath) as! SettingsCell
         switch indexPath.section {
         case 1:
             cell.textField.placeholder = "Enter Name"
+            cell.textField.text = user?.name
+            cell.textField.addTarget(self, action: #selector(handleNameChange), for: .editingChanged)
         case 2:
             cell.textField.placeholder = "Enter profession"
+            cell.textField.text = user?.profession
+            cell.textField.addTarget(self, action: #selector(handleProfessionChange), for: .editingChanged)
         case 3:
             cell.textField.placeholder = "Enter age"
+            cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
+            if let age = user?.age {
+                cell.textField.text = String(age)
+                
+            }
         default:
             cell.textField.placeholder = "Write BIO"
         }
         return cell
     }
     
+    //MARK: - Selectors
     
+    @objc fileprivate func handleNameChange(textField: UITextField) {
+        self.user?.name = textField.text
+    }
     
+    @objc fileprivate func handleProfessionChange(textField: UITextField) {
+        self.user?.profession = textField.text
+    }
+    
+    @objc fileprivate func handleAgeChange(textField: UITextField) {
+        self.user?.age = Int(textField.text ?? "")
+    }
+    
+    @objc fileprivate func handleBioChange(textField: UITextField) {
+        
+    }
+    
+    @objc fileprivate func handleSave() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        let docData: [String : Any] = [
+            "uid": uid,
+            "fullName": user?.name ?? "",
+            "age": user?.age ??  -1,
+            "imageUrl1": user?.imageUrl1 ?? "",
+            "profession": user?.profession ?? ""
+        ]
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Saving settings"
+        hud.show(in: view)
+        Firestore.firestore().collection("users").document(uid).setData(docData) { err in
+            hud.dismiss()
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            print("Finished saving user info")
+        }
+    }
+    
+    @objc fileprivate func handleSelectPhoto(button: UIButton) {
+        let imagePicker = CustomImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.imageButton = button
+        present(imagePicker, animated: true)
+    }
+    
+    @objc fileprivate func handleCancel() {
+        dismiss(animated: true)
+    }
 }
 
