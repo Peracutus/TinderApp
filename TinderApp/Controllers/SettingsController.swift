@@ -41,12 +41,14 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     
     fileprivate func customButton(selector: Selector) -> UIButton {
         let button = UIButton(type: .system)
-        button.backgroundColor = .green
-        button.setTitle("select photo", for: .normal)
+        button.backgroundColor = .white
+        button.setTitle("Select Photo", for: .normal)
         button.layer.cornerRadius = 8
         button.addTarget(self, action: selector, for: .touchUpInside)
         button.imageView?.contentMode = .scaleAspectFill
         button.clipsToBounds = true
+        button.tintColor = .black
+        button.layer.borderWidth = 1
         return button
     }
     
@@ -56,16 +58,16 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         super.viewDidLoad()
         
         setupNavigationItems()
-        //        tableView.delegate = self
-        //        tableView.dataSource = self
-        //        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        //
+        tableView.register(SettingsCell.self, forCellReuseIdentifier: "settingsCell")
+        tableView.bounces = false
     }
     
     fileprivate func setupNavigationItems() {
         
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .interactive
+        tableView.allowsSelection = false
         
         navigationItem.title = "Settings"
         navigationController?.navigationBar.tintColor = .black
@@ -75,25 +77,15 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         
     }
     
-    //    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    //        return 5
-    //    }
-    //
-    //    override func numberOfSections(in tableView: UITableView) -> Int {
-    //        return 1
-    //    }
-    //
-    //    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    //        return 50
-    //    }
-    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 300
+        if section == 0 {
+            return 300
+        }
+        return 20
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    lazy var header: UIView = {
         let header = UIView()
-        header.backgroundColor = .red
         header.addSubview(headerImage1)
         let padding: CGFloat = 16
         headerImage1.anchor(top: header.topAnchor, leading: header.leadingAnchor, bottom: header.bottomAnchor, trailing: nil, padding: .init(top: padding, left: padding, bottom: padding, right: 0))
@@ -106,17 +98,63 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         
         header.addSubview(vStackView)
         vStackView.anchor(top: header.topAnchor, leading: headerImage1.trailingAnchor, bottom: header.bottomAnchor, trailing: header.trailingAnchor, padding: .init(top: padding, left: padding, bottom: padding, right: padding))
-
         return header
+    }()
+    
+    class HeaderLabel: UILabel {
+        
+        override func drawText(in rect: CGRect) {
+            super.drawText(in: rect.insetBy(dx: 16, dy: 0))
+        }
+        
+    }
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 0 {
+            return header
+        }
+        let label = HeaderLabel()
+        switch section {
+        case 1:
+            label.text = "Name"
+        case 2:
+            label.text = "Profession"
+        case 3:
+            label.text = "Age"
+        default:
+            label.text = "Bio"
+        }
+        return label
     }
     
-    //    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    //        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-    //
-    //        return cell
-    //    }
-    //
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return section == 0 ? 0 : 1
+    }
     
-  
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 5
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 30
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath) as! SettingsCell
+        switch indexPath.section {
+        case 1:
+            cell.textField.placeholder = "Enter Name"
+        case 2:
+            cell.textField.placeholder = "Enter profession"
+        case 3:
+            cell.textField.placeholder = "Enter age"
+        default:
+            cell.textField.placeholder = "Write BIO"
+        }
+        return cell
+    }
+    
+    
+    
 }
 

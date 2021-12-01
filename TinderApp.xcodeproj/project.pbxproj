@@ -26,7 +26,7 @@
 		B595299F2750E48200434FC5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B595299E2750E48100434FC5 /* GoogleService-Info.plist */; };
 		B59529A1275150BD00434FC5 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A0275150BD00434FC5 /* Bindable.swift */; };
 		B59529A32754917A00434FC5 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A22754917A00434FC5 /* SettingsController.swift */; };
-		B59529A52754E28900434FC5 /* RegistrationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A42754E28900434FC5 /* RegistrationCell.swift */; };
+		B59529A52754E28900434FC5 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A42754E28900434FC5 /* SettingsCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +51,7 @@
 		B595299E2750E48100434FC5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B59529A0275150BD00434FC5 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		B59529A22754917A00434FC5 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
-		B59529A42754E28900434FC5 /* RegistrationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationCell.swift; sourceTree = "<group>"; };
+		B59529A42754E28900434FC5 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		D9C87C7D907DD72DC12EBA64 /* Pods_TinderApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinderApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF502B9C48F6E3540027774A /* Pods-TinderApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderApp.debug.xcconfig"; path = "Target Support Files/Pods-TinderApp/Pods-TinderApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,6 +124,7 @@
 		B51277202749378A00E7AC05 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B59529A42754E28900434FC5 /* SettingsCell.swift */,
 				B5127723274947C200E7AC05 /* TopNavigationStackView.swift */,
 				B5127721274937F200E7AC05 /* HomeBottomControlsStackView.swift */,
 				B5127725274950B500E7AC05 /* CardView.swift */,
@@ -137,7 +138,6 @@
 			children = (
 				B5127728274A553000E7AC05 /* User.swift */,
 				B5635D82274A9852003FCCE2 /* Advertiser.swift */,
-				B59529A42754E28900434FC5 /* RegistrationCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -297,7 +297,7 @@
 				B59529A1275150BD00434FC5 /* Bindable.swift in Sources */,
 				B595299D274FDA4F00434FC5 /* RegistrationViewModel.swift in Sources */,
 				B5635D87274E5330003FCCE2 /* CustomTextField.swift in Sources */,
-				B59529A52754E28900434FC5 /* RegistrationCell.swift in Sources */,
+				B59529A52754E28900434FC5 /* SettingsCell.swift in Sources */,
 				B512770A2749295900E7AC05 /* SceneDelegate.swift in Sources */,
 				B512771F2749326B00E7AC05 /* UIViewExtention.swift in Sources */,
 				B5635D81274A8030003FCCE2 /* CardViewModel.swift in Sources */,

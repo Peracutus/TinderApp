@@ -39,8 +39,9 @@ class MainController: UIViewController {
         
         let settings = SettingsController()
         let navigation = UINavigationController(rootViewController: settings)
-    
+        navigation.modalPresentationStyle = .fullScreen
         present(navigation, animated: true)
+        
 //        let registrationController = RegistrationController()
 //        present(registrationController, animated: true)
     }
