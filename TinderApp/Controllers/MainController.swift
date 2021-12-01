@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import JGProgressHUD
 
 class MainController: UIViewController {
     
@@ -14,18 +15,8 @@ class MainController: UIViewController {
 
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
-    let buttonsStackView = HomeBottomControlsStackView()
-    
-//    let cardViewModels: [CardViewModel] = {
-//        let producers = [
-//            User(name: "Girl2", age: 20, profession: "Teacher", imageNames: ["girl_2"]),
-//            User(name: "Alexandra", age: 23, profession: "Actress", imageNames: ["alexa_1", "alexa_2", "alexa_3"]),
-//            Advertiser(title: "AdView", brandName: "Company", posterPhotoName: "adsView")
-//        ] as [ProducesCardViewModel]
+    let bottomControls = HomeBottomControlsStackView()
 
-//        let viewModels = producers.map({return $0.toCardViewModel()})
-//        return viewModels
-//    }()
     var cardViewModels = [CardViewModel]()
     
     //MARK: - ViewDidLoad
@@ -34,22 +25,40 @@ class MainController: UIViewController {
         super.viewDidLoad()
     
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
-        
+        bottomControls.refreshButton.addTarget(self, action: #selector(handleRefreshButton), for: .touchUpInside)
         setupLayout()
         setupDummyCards()
         fetchUsersFromFirestore()
     }
     
+    @objc fileprivate func handleRefreshButton() {
+        fetchUsersFromFirestore()
+    }
+    
     @objc fileprivate func handleSettings() {
-        let registrationController = RegistrationController()
-        present(registrationController, animated: true)
-        //navigationController?.pushViewController(registrationController, animated: true)
+        
+        let settings = SettingsController()
+        let navigation = UINavigationController(rootViewController: settings)
+    
+        present(navigation, animated: true)
+//        let registrationController = RegistrationController()
+//        present(registrationController, animated: true)
     }
     
     //MARK: - Fileprivate
     
+    var lastFetchedUser: User?
+    
     fileprivate func fetchUsersFromFirestore() {
-        Firestore.firestore().collection("users").getDocuments { (snapshot, err) in
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Fetching users"
+        hud.show(in: view)
+        
+        let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastFetchedUser?.uid ?? ""]).limit(to: 2)
+        
+        query.getDocuments { (snapshot, err) in
+            hud.dismiss()
             if let err = err {
                 print("Failed to fetch users:", err)
                 return
@@ -59,12 +68,23 @@ class MainController: UIViewController {
                 let user = User(dictionary: userDictionary)
                 self.cardViewModels.append(user.toCardViewModel())
                 
+                self.setupCardFromUser(user: user)
             })
-            self.setupDummyCards()
+            //elf.setupDummyCards()
         }
     }
     
+    fileprivate func setupCardFromUser(user: User) {
+        let cardView = CardView(frame: .zero)
+        
+        cardView.cardViewModel = user.toCardViewModel()
+        cardsDeckView.addSubview(cardView)
+        //cardsDeckView.sendSubviewToBack(cardView)
+        cardView.fillSuperview()
+    }
+    
     fileprivate func setupDummyCards() {
+        
         cardViewModels.forEach { (cardVM) in
             let cardView = CardView(frame: .zero)
             
@@ -76,7 +96,7 @@ class MainController: UIViewController {
 
     fileprivate func setupLayout() {
         view.backgroundColor = .white
-        let generalStack = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, buttonsStackView])
+        let generalStack = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, bottomControls])
         view.addSubview(generalStack)
         generalStack.axis = .vertical
         generalStack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
