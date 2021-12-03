@@ -29,6 +29,43 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         let imageButton = (picker as? CustomImagePickerController)?.imageButton
         imageButton?.setImage(selectedPhoto?.withRenderingMode(.alwaysOriginal), for: .normal)
         dismiss(animated: true)
+        
+        let filename = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+        guard let uploadData = selectedPhoto?.jpegData(compressionQuality: 0.75) else {return}
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Saving image"
+        hud.show(in: view)
+        
+        ref.putData(uploadData, metadata: nil) { (nil, err) in
+            hud.dismiss()
+            if let err = err {
+                print("Failed to upload image to storage", err)
+                return
+            }
+            
+            print("Finished uploading image")
+            ref.downloadURL { (url, err) in
+                hud.dismiss()
+                if let err = err {
+                    print("Failed to retrieve download URL:", err)
+                    return
+                }
+                
+                print("Finished getting download url:", url?.absoluteString ?? "")
+                if imageButton == self.headerImage1 {
+                    self.user?.imageUrl1 = url?.absoluteString
+                } else if imageButton == self.headerImage2 {
+                    self.user?.imageUrl2 = url?.absoluteString
+                } else {
+                    self.user?.imageUrl3 = url?.absoluteString
+                }
+                
+                
+                
+            }
+        }
     }
     
     
@@ -77,11 +114,21 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     fileprivate func loadUserPhoto() {
-        guard let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) else {return}
-        SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
-            self.headerImage1.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) {
+            SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
+                self.headerImage1.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
         }
-        //self.user?.imageUrl1
+        if let imageUrl = user?.imageUrl2, let url = URL(string: imageUrl) {
+            SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
+                self.headerImage2.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+        if let imageUrl = user?.imageUrl3, let url = URL(string: imageUrl) {
+            SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
+                self.headerImage3.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
     }
     
     fileprivate func setupNavigationItems() {
@@ -150,9 +197,12 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             label.text = "Profession"
         case 3:
             label.text = "Age"
-        default:
+        case 4:
             label.text = "Bio"
+        default:
+            label.text = "Seeking age range"
         }
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }
     
@@ -161,11 +211,21 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return 6
     }
-    
-    
+ 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 5 {
+            let ageRange = AgeRangeTableCell(style: .default, reuseIdentifier: nil)
+            ageRange.minAgeSlider.addTarget(self, action: #selector(handleChangeMinAgeSlider), for: .valueChanged)
+            ageRange.minLabel.text = "Min: \(user?.minSearchAge ?? 18)"
+            ageRange.minAgeSlider.value = Float(user?.minSearchAge ?? 18)
+            ageRange.maxAgeSlider.addTarget(self, action: #selector(handleMaxAgeSlider), for: .valueChanged)
+            ageRange.maxLabel.text = "Max: \(user?.maxSearchAge ?? 55)"
+            ageRange.maxAgeSlider.value = Float(user?.maxSearchAge ?? 55)
+            return ageRange
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingsCell", for: indexPath) as! SettingsCell
         switch indexPath.section {
         case 1:
@@ -185,11 +245,27 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             }
         default:
             cell.textField.placeholder = "Write BIO"
+            cell.textField.text = user?.bio
+            cell.textField.addTarget(self, action: #selector(handleBioChange), for: .editingChanged)
         }
         return cell
     }
     
     //MARK: - Selectors
+    
+    @objc fileprivate func handleChangeMinAgeSlider(slider: UISlider) {
+        let indexPath = IndexPath(row: 0, section: 5)
+        let ageRangeCell = tableView.cellForRow(at: indexPath) as! AgeRangeTableCell
+        ageRangeCell.minLabel.text = "Min: \(Int(slider.value))"
+        self.user?.minSearchAge = Int(slider.value)
+        }
+    
+    @objc fileprivate func handleMaxAgeSlider(slider: UISlider) {
+        let indexPath = IndexPath(row: 0, section: 5)
+        let ageRangeCell = tableView.cellForRow(at: indexPath) as! AgeRangeTableCell
+        ageRangeCell.maxLabel.text = "Max: \(Int(slider.value))"
+        self.user?.maxSearchAge = Int(slider.value)
+    }
     
     @objc fileprivate func handleNameChange(textField: UITextField) {
         self.user?.name = textField.text
@@ -204,7 +280,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     @objc fileprivate func handleBioChange(textField: UITextField) {
-        
+        self.user?.bio = textField.text
     }
     
     @objc fileprivate func handleSave() {
@@ -214,7 +290,12 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             "fullName": user?.name ?? "",
             "age": user?.age ??  -1,
             "imageUrl1": user?.imageUrl1 ?? "",
-            "profession": user?.profession ?? ""
+            "imageUrl2": user?.imageUrl2 ?? "",
+            "imageUrl3": user?.imageUrl3 ?? "",
+            "profession": user?.profession ?? "",
+            "bio": user?.bio ?? "",
+            "minAgeValue": user?.minSearchAge ?? 18,
+            "maxAgeValue": user?.maxSearchAge ?? 55
         ]
         
         let hud = JGProgressHUD(style: .dark)

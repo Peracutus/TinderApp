@@ -27,6 +27,7 @@
 		B59529A1275150BD00434FC5 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A0275150BD00434FC5 /* Bindable.swift */; };
 		B59529A32754917A00434FC5 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A22754917A00434FC5 /* SettingsController.swift */; };
 		B59529A52754E28900434FC5 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A42754E28900434FC5 /* SettingsCell.swift */; };
+		B59529A92758834800434FC5 /* AgeRangeTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A82758834800434FC5 /* AgeRangeTableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		B59529A0275150BD00434FC5 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		B59529A22754917A00434FC5 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		B59529A42754E28900434FC5 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		B59529A82758834800434FC5 /* AgeRangeTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableCell.swift; sourceTree = "<group>"; };
 		D9C87C7D907DD72DC12EBA64 /* Pods_TinderApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinderApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF502B9C48F6E3540027774A /* Pods-TinderApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderApp.debug.xcconfig"; path = "Target Support Files/Pods-TinderApp/Pods-TinderApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -124,6 +126,7 @@
 		B51277202749378A00E7AC05 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B59529A82758834800434FC5 /* AgeRangeTableCell.swift */,
 				B59529A42754E28900434FC5 /* SettingsCell.swift */,
 				B5127723274947C200E7AC05 /* TopNavigationStackView.swift */,
 				B5127721274937F200E7AC05 /* HomeBottomControlsStackView.swift */,
@@ -292,6 +295,7 @@
 				B5127722274937F200E7AC05 /* HomeBottomControlsStackView.swift in Sources */,
 				B5127729274A553000E7AC05 /* User.swift in Sources */,
 				B59529A32754917A00434FC5 /* SettingsController.swift in Sources */,
+				B59529A92758834800434FC5 /* AgeRangeTableCell.swift in Sources */,
 				B5635D85274E4814003FCCE2 /* RegistrationController.swift in Sources */,
 				B5127724274947C200E7AC05 /* TopNavigationStackView.swift in Sources */,
 				B59529A1275150BD00434FC5 /* Bindable.swift in Sources */,
