@@ -28,6 +28,7 @@
 		B59529A32754917A00434FC5 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A22754917A00434FC5 /* SettingsController.swift */; };
 		B59529A52754E28900434FC5 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A42754E28900434FC5 /* SettingsCell.swift */; };
 		B59529A92758834800434FC5 /* AgeRangeTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A82758834800434FC5 /* AgeRangeTableCell.swift */; };
+		B59529B0275F63FC00434FC5 /* Firestore Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529AF275F63FC00434FC5 /* Firestore Utilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		B59529A22754917A00434FC5 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		B59529A42754E28900434FC5 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		B59529A82758834800434FC5 /* AgeRangeTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableCell.swift; sourceTree = "<group>"; };
+		B59529AF275F63FC00434FC5 /* Firestore Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firestore Utilities.swift"; sourceTree = "<group>"; };
 		D9C87C7D907DD72DC12EBA64 /* Pods_TinderApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinderApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF502B9C48F6E3540027774A /* Pods-TinderApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderApp.debug.xcconfig"; path = "Target Support Files/Pods-TinderApp/Pods-TinderApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				B512771E2749326B00E7AC05 /* UIViewExtention.swift */,
+				B59529AF275F63FC00434FC5 /* Firestore Utilities.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -126,8 +129,7 @@
 		B51277202749378A00E7AC05 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B59529A82758834800434FC5 /* AgeRangeTableCell.swift */,
-				B59529A42754E28900434FC5 /* SettingsCell.swift */,
+				B59529B1275F681800434FC5 /* Cells */,
 				B5127723274947C200E7AC05 /* TopNavigationStackView.swift */,
 				B5127721274937F200E7AC05 /* HomeBottomControlsStackView.swift */,
 				B5127725274950B500E7AC05 /* CardView.swift */,
@@ -163,6 +165,15 @@
 				B595299C274FDA4F00434FC5 /* RegistrationViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B59529B1275F681800434FC5 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				B59529A82758834800434FC5 /* AgeRangeTableCell.swift */,
+				B59529A42754E28900434FC5 /* SettingsCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		E7B94ADF944B87B6B1538E9B /* Frameworks */ = {
@@ -301,6 +312,7 @@
 				B59529A1275150BD00434FC5 /* Bindable.swift in Sources */,
 				B595299D274FDA4F00434FC5 /* RegistrationViewModel.swift in Sources */,
 				B5635D87274E5330003FCCE2 /* CustomTextField.swift in Sources */,
+				B59529B0275F63FC00434FC5 /* Firestore Utilities.swift in Sources */,
 				B59529A52754E28900434FC5 /* SettingsCell.swift in Sources */,
 				B512770A2749295900E7AC05 /* SceneDelegate.swift in Sources */,
 				B512771F2749326B00E7AC05 /* UIViewExtention.swift in Sources */,

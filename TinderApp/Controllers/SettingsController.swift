@@ -10,19 +10,22 @@ import Firebase
 import JGProgressHUD
 import SDWebImage
 
+protocol SettingsControllerDelegate {
+    func didSaveSettings()
+}
+
 class CustomImagePickerController: UIImagePickerController {
-    
     var imageButton: UIButton?
 }
 
 class SettingsController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    var delegate: SettingsControllerDelegate?
+    
     //instance properties
     lazy var headerImage1 = customButton(selector: #selector(handleSelectPhoto))
     lazy var headerImage2 = customButton(selector: #selector(handleSelectPhoto))
     lazy var headerImage3 = customButton(selector: #selector(handleSelectPhoto))
-    
-    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let selectedPhoto = info[.originalImage] as? UIImage
@@ -61,13 +64,9 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
                 } else {
                     self.user?.imageUrl3 = url?.absoluteString
                 }
-                
-                
-                
             }
         }
     }
-    
     
     //MARK: - Views
     
@@ -94,21 +93,16 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         fetchCurrentUser()
     }
     
-    var user: User?
+    fileprivate var user: User?
     
     fileprivate func fetchCurrentUser() {
-        //fetch firestore data
-        guard let uid = Auth.auth().currentUser?.uid else {return}
-        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-                print(err)
+        Firestore.firestore().fetchCurrentUser { (user, error) in
+            if let error = error {
+                print("Failed to fetch user", error)
                 return
             }
-            
-            guard let dictionary = snapshot?.data()  else {return}
-            self.user = User(dictionary: dictionary)
+            self.user = user
             self.loadUserPhoto()
-            
             self.tableView.reloadData()
         }
     }
@@ -139,7 +133,6 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(handleCancel)),
                                               UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave))]
-        
     }
     
     //MARK: - UITableView
@@ -178,13 +171,6 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         return header
     }()
     
-    class HeaderLabel: UILabel {
-        
-        override func drawText(in rect: CGRect) {
-            super.drawText(in: rect.insetBy(dx: 16, dy: 0))
-        }
-        
-    }
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
             return header
@@ -217,12 +203,12 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 5 {
             let ageRange = AgeRangeTableCell(style: .default, reuseIdentifier: nil)
-            ageRange.minAgeSlider.addTarget(self, action: #selector(handleChangeMinAgeSlider), for: .valueChanged)
+            ageRange.minAgeSlider.addTarget(self, action: #selector(changeMinAgeSlider), for: .valueChanged)
+            ageRange.maxAgeSlider.addTarget(self, action: #selector(handleMaxAgeSlider), for: .valueChanged)
             ageRange.minLabel.text = "Min: \(user?.minSearchAge ?? 18)"
             ageRange.minAgeSlider.value = Float(user?.minSearchAge ?? 18)
-            ageRange.maxAgeSlider.addTarget(self, action: #selector(handleMaxAgeSlider), for: .valueChanged)
             ageRange.maxLabel.text = "Max: \(user?.maxSearchAge ?? 55)"
-            ageRange.maxAgeSlider.value = Float(user?.maxSearchAge ?? 55)
+            ageRange.maxAgeSlider.value = Float(user?.maxSearchAge ?? 40)
             return ageRange
         }
         
@@ -241,7 +227,6 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
             if let age = user?.age {
                 cell.textField.text = String(age)
-                
             }
         default:
             cell.textField.placeholder = "Write BIO"
@@ -251,20 +236,27 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         return cell
     }
     
+    fileprivate func evaluateMinMax() {
+        guard let ageRangeCell = tableView.cellForRow(at: [5, 0]) as? AgeRangeTableCell else { return }
+        let minValue = Int(ageRangeCell.minAgeSlider.value)
+        var maxValue = Int(ageRangeCell.maxAgeSlider.value)
+        maxValue = max(minValue, maxValue)
+        ageRangeCell.maxAgeSlider.value = Float(maxValue)
+        ageRangeCell.minLabel.text = "Min \(minValue)"
+        ageRangeCell.maxLabel.text = "Max \(maxValue)"
+        
+        user?.minSearchAge = minValue
+        user?.maxSearchAge = maxValue
+    }
+    
     //MARK: - Selectors
     
-    @objc fileprivate func handleChangeMinAgeSlider(slider: UISlider) {
-        let indexPath = IndexPath(row: 0, section: 5)
-        let ageRangeCell = tableView.cellForRow(at: indexPath) as! AgeRangeTableCell
-        ageRangeCell.minLabel.text = "Min: \(Int(slider.value))"
-        self.user?.minSearchAge = Int(slider.value)
+    @objc fileprivate func changeMinAgeSlider(slider: UISlider) {
+        evaluateMinMax()
         }
     
     @objc fileprivate func handleMaxAgeSlider(slider: UISlider) {
-        let indexPath = IndexPath(row: 0, section: 5)
-        let ageRangeCell = tableView.cellForRow(at: indexPath) as! AgeRangeTableCell
-        ageRangeCell.maxLabel.text = "Max: \(Int(slider.value))"
-        self.user?.maxSearchAge = Int(slider.value)
+        evaluateMinMax()
     }
     
     @objc fileprivate func handleNameChange(textField: UITextField) {
@@ -307,7 +299,6 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
                 print(err)
                 return
             }
-            
             print("Finished saving user info")
         }
     }
@@ -321,6 +312,15 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     
     @objc fileprivate func handleCancel() {
         dismiss(animated: true)
+    }
+    
+    //MARK: - Inner class
+    
+    class HeaderLabel: UILabel {
+        override func drawText(in rect: CGRect) {
+            super.drawText(in: rect.insetBy(dx: 16, dy: 0))
+        }
+        
     }
 }
 

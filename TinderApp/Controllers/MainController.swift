@@ -42,8 +42,6 @@ class MainController: UIViewController {
         navigation.modalPresentationStyle = .fullScreen
         present(navigation, animated: true)
         
-//        let registrationController = RegistrationController()
-//        present(registrationController, animated: true)
     }
     
     //MARK: - Fileprivate

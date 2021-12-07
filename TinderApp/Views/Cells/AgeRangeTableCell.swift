@@ -24,17 +24,8 @@ class AgeRangeTableCell: UITableViewCell {
         return slider
     }()
     
-    let minLabel: UILabel = {
-        let label = AgeRangeLabel()
-        label.text = "min age"
-        return label
-    }()
-    
-    let maxLabel: UILabel = {
-        let label = AgeRangeLabel()
-        label.text = "max age"
-        return label
-    }()
+    let minLabel = AgeRangeLabel()
+    let maxLabel = AgeRangeLabel()
     
     class AgeRangeLabel: UILabel {
         override var intrinsicContentSize: CGSize {
@@ -53,8 +44,6 @@ class AgeRangeTableCell: UITableViewCell {
         stackView.spacing = 15
         contentView.addSubview(stackView)
         stackView.fillSuperview()
-        //stackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
-        
     }
     
     required init?(coder: NSCoder) {
