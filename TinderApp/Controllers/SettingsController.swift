@@ -199,7 +199,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 6
     }
- 
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 5 {
             let ageRange = AgeRangeTableCell(style: .default, reuseIdentifier: nil)
@@ -253,7 +253,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     
     @objc fileprivate func changeMinAgeSlider(slider: UISlider) {
         evaluateMinMax()
-        }
+    }
     
     @objc fileprivate func handleMaxAgeSlider(slider: UISlider) {
         evaluateMinMax()
@@ -300,6 +300,10 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
                 return
             }
             print("Finished saving user info")
+            self.dismiss(animated: true, completion: {
+                print("Dismissal complete")
+                self.delegate?.didSaveSettings()
+            })
         }
     }
     

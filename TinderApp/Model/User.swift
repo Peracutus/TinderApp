@@ -28,7 +28,7 @@ struct User: ProducesCardViewModel {
         self.imageUrl3 = dictionary["imageUrl3"] as? String
         self.bio = dictionary["bio"] as? String ?? ""
         self.minSearchAge = dictionary["minAgeValue"] as? Int
-        self.maxSearchAge = dictionary["maxAgeValue "] as? Int 
+        self.maxSearchAge = dictionary["maxAgeValue"] as? Int
         self.uid = dictionary["uid"] as? String ?? ""
     }
     
