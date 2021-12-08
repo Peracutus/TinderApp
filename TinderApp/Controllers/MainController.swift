@@ -12,27 +12,32 @@ import JGProgressHUD
 class MainController: UIViewController, SettingsControllerDelegate {
     
     //MARK: - Views
-
+    
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControls = HomeBottomControlsStackView()
-
+    
     var cardViewModels = [CardViewModel]()
     
-    //MARK: - ViewDidLoad
+    //MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         setupLayout()
         
-        
-//        setupDummyCards()
-//        fetchUsersFromFirestore()
-        
         fetchFilteredUser()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if Auth.auth().currentUser == nil {
+            let registrationController = RegistrationController()
+            let navigationController = UINavigationController(rootViewController: registrationController)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true)
+        }
     }
     
     fileprivate let hud = JGProgressHUD(style: .dark)
@@ -97,7 +102,7 @@ class MainController: UIViewController, SettingsControllerDelegate {
             cardView.fillSuperview()
         }
     }
-
+    
     fileprivate func setupLayout() {
         view.backgroundColor = .white
         let generalStack = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, bottomControls])
@@ -106,7 +111,7 @@ class MainController: UIViewController, SettingsControllerDelegate {
         generalStack.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
         generalStack.isLayoutMarginsRelativeArrangement = true
         generalStack.layoutMargins = .init(top: 0, left: 10, bottom: 0, right: 10)
-        generalStack.bringSubviewToFront(cardsDeckView) 
+        generalStack.bringSubviewToFront(cardsDeckView)
     }
     
     //MARK: - Selectors
@@ -128,6 +133,6 @@ class MainController: UIViewController, SettingsControllerDelegate {
         print("Notified of dismissal from SettingsController in HomeController")
         fetchFilteredUser()
     }
-
+    
 }
 

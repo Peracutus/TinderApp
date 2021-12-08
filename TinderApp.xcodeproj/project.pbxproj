@@ -29,6 +29,9 @@
 		B59529A52754E28900434FC5 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A42754E28900434FC5 /* SettingsCell.swift */; };
 		B59529A92758834800434FC5 /* AgeRangeTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529A82758834800434FC5 /* AgeRangeTableCell.swift */; };
 		B59529B0275F63FC00434FC5 /* Firestore Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529AF275F63FC00434FC5 /* Firestore Utilities.swift */; };
+		B59529B3275F9E2700434FC5 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529B2275F9E2700434FC5 /* LoginViewModel.swift */; };
+		B59529B5275FA7DA00434FC5 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529B4275FA7DA00434FC5 /* LoginController.swift */; };
+		B59529B7275FAC1300434FC5 /* UIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59529B6275FAC1300434FC5 /* UIButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +59,9 @@
 		B59529A42754E28900434FC5 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		B59529A82758834800434FC5 /* AgeRangeTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeTableCell.swift; sourceTree = "<group>"; };
 		B59529AF275F63FC00434FC5 /* Firestore Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firestore Utilities.swift"; sourceTree = "<group>"; };
+		B59529B2275F9E2700434FC5 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		B59529B4275FA7DA00434FC5 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		B59529B6275FAC1300434FC5 /* UIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButton.swift; sourceTree = "<group>"; };
 		D9C87C7D907DD72DC12EBA64 /* Pods_TinderApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinderApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF502B9C48F6E3540027774A /* Pods-TinderApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderApp.debug.xcconfig"; path = "Target Support Files/Pods-TinderApp/Pods-TinderApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +128,7 @@
 			children = (
 				B512771E2749326B00E7AC05 /* UIViewExtention.swift */,
 				B59529AF275F63FC00434FC5 /* Firestore Utilities.swift */,
+				B59529B6275FAC1300434FC5 /* UIButton.swift */,
 			);
 			path = Extentions;
 			sourceTree = "<group>";
@@ -151,9 +158,9 @@
 			isa = PBXGroup;
 			children = (
 				B512770B2749295900E7AC05 /* MainController.swift */,
-				B5635D84274E4814003FCCE2 /* RegistrationController.swift */,
-				B59529A0275150BD00434FC5 /* Bindable.swift */,
 				B59529A22754917A00434FC5 /* SettingsController.swift */,
+				B5635D84274E4814003FCCE2 /* RegistrationController.swift */,
+				B59529B4275FA7DA00434FC5 /* LoginController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -161,8 +168,10 @@
 		B5635D7F274A8012003FCCE2 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				B59529A0275150BD00434FC5 /* Bindable.swift */,
 				B5635D80274A8030003FCCE2 /* CardViewModel.swift */,
 				B595299C274FDA4F00434FC5 /* RegistrationViewModel.swift */,
+				B59529B2275F9E2700434FC5 /* LoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -308,7 +317,9 @@
 				B59529A32754917A00434FC5 /* SettingsController.swift in Sources */,
 				B59529A92758834800434FC5 /* AgeRangeTableCell.swift in Sources */,
 				B5635D85274E4814003FCCE2 /* RegistrationController.swift in Sources */,
+				B59529B5275FA7DA00434FC5 /* LoginController.swift in Sources */,
 				B5127724274947C200E7AC05 /* TopNavigationStackView.swift in Sources */,
+				B59529B7275FAC1300434FC5 /* UIButton.swift in Sources */,
 				B59529A1275150BD00434FC5 /* Bindable.swift in Sources */,
 				B595299D274FDA4F00434FC5 /* RegistrationViewModel.swift in Sources */,
 				B5635D87274E5330003FCCE2 /* CustomTextField.swift in Sources */,
@@ -316,6 +327,7 @@
 				B59529A52754E28900434FC5 /* SettingsCell.swift in Sources */,
 				B512770A2749295900E7AC05 /* SceneDelegate.swift in Sources */,
 				B512771F2749326B00E7AC05 /* UIViewExtention.swift in Sources */,
+				B59529B3275F9E2700434FC5 /* LoginViewModel.swift in Sources */,
 				B5635D81274A8030003FCCE2 /* CardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

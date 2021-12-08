@@ -131,7 +131,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
-        navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(handleCancel)),
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(title: "Log out", style: .plain, target: self, action: #selector(handleLogOut)),
                                               UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave))]
     }
     
@@ -315,6 +315,11 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     @objc fileprivate func handleCancel() {
+        dismiss(animated: true)
+    }
+    
+    @objc fileprivate func handleLogOut() {
+        try? Auth.auth().signOut()
         dismiss(animated: true)
     }
     

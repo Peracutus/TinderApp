@@ -11,6 +11,7 @@ class CustomTextField: UITextField {
     
     let padding: CGFloat
     
+    
     init(padding: CGFloat, placeholder: String) {
         self.padding = padding
         super.init(frame: .zero)

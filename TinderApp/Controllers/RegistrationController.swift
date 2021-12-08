@@ -31,19 +31,7 @@ class RegistrationController: UIViewController {
     let nameTextField = CustomTextField(padding: 24, placeholder: "Enter full name")
     let emailTextField = CustomTextField(padding: 24, placeholder: "Enter email")
     let passwordTextField = CustomTextField(padding: 24, placeholder: "Enter password")
-    
-    let registrationButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Register", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.layer.cornerRadius = 25
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        button.backgroundColor = .systemGray
-        button.isEnabled = false
-        button.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
-        return button
-    }()
+    let registrationButton = UIButton()
     
     lazy var verticalStackView: UIStackView = {
         let sv = UIStackView(arrangedSubviews: [
@@ -59,6 +47,8 @@ class RegistrationController: UIViewController {
     
     lazy var stackView = UIStackView(arrangedSubviews: [selectImageButton,
                                                         verticalStackView])
+    
+    let loginButton = UIButton(title: "Log In", color: .white, size: 16)
     
     //MARK: - App lifeCycle
     let registeringHUD = JGProgressHUD(style: .dark)
@@ -76,6 +66,10 @@ class RegistrationController: UIViewController {
         setupTapGesture()
         setupNatificationObserver()
         setupRegistrationViewModelObserver()
+        
+        registrationButton.setRegLogButton(title: "Registration")
+        registrationButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(handleLogIn), for: .touchUpInside)
     }
      
     //MARK: - Fileprivate
@@ -102,17 +96,8 @@ class RegistrationController: UIViewController {
         view.addSubview(stackView)
         stackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-    }
-    
-    @objc fileprivate func handleVarifiedEmptyField( textField: UITextField) {
-        
-        if textField == nameTextField {
-            registrationViewModel.fullName = textField.text
-        } else if textField == emailTextField {
-            registrationViewModel.email = textField.text
-        } else {
-            registrationViewModel.password = textField.text
-        }
+        view.addSubview(loginButton)
+        loginButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
     }
     
     fileprivate func setupNatificationObserver() {
@@ -124,7 +109,6 @@ class RegistrationController: UIViewController {
         nameTextField.addTarget(self, action: #selector(handleVarifiedEmptyField), for: .editingChanged)
         emailTextField.addTarget(self, action: #selector(handleVarifiedEmptyField), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(handleVarifiedEmptyField), for: .editingChanged)
-        
         
         //FORM VALID
         registrationViewModel.bindableIsFormValid.bind { [unowned self] (isFormValid) in
@@ -154,14 +138,27 @@ class RegistrationController: UIViewController {
                 self.registeringHUD.show(in: self.view)
             } else {
                 self.registeringHUD.dismiss()
-                self.emailTextField.text?.removeAll()
-                self.passwordTextField.text?.removeAll()
-                self.nameTextField.text?.removeAll()
             }
         }
     }
     
     //MARK: - Selectors
+    
+    @objc fileprivate func handleVarifiedEmptyField( textField: UITextField) {
+        
+        if textField == nameTextField {
+            registrationViewModel.fullName = textField.text
+        } else if textField == emailTextField {
+            registrationViewModel.email = textField.text
+        } else {
+            registrationViewModel.password = textField.text
+        }
+    }
+    
+    @objc fileprivate func handleLogIn() {
+        let loginController = LoginController()
+        navigationController?.pushViewController(loginController, animated: true)
+    }
     
     @objc fileprivate func handleSelectImage() {
         let imagePicker = UIImagePickerController()
@@ -223,8 +220,7 @@ class RegistrationController: UIViewController {
         gradientLayer.frame = view.bounds
     }
     
-    fileprivate func setupGradientLayer() {
-        
+    func setupGradientLayer() {
         let topColor = UIColor.orange
         let bottomColor = UIColor.red
         
