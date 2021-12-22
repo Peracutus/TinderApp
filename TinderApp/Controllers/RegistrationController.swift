@@ -12,6 +12,8 @@ import FirebaseStorage
 
 class RegistrationController: UIViewController {
     
+    var delegate: LoginControllerDelegate?
+    
     //MARK: - Views
     
     let selectImageButton: UIButton = {
@@ -157,6 +159,7 @@ class RegistrationController: UIViewController {
     
     @objc fileprivate func handleLogIn() {
         let loginController = LoginController()
+        loginController.delegate = delegate
         navigationController?.pushViewController(loginController, animated: true)
     }
     
@@ -175,6 +178,9 @@ class RegistrationController: UIViewController {
             return
             }
             print("Finished registering user")
+            self?.dismiss(animated: true, completion: {
+                self?.delegate?.didFinishLoggingIn()
+            })
         }
     }
     

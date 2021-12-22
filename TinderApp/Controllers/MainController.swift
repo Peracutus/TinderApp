@@ -9,7 +9,7 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-class MainController: UIViewController, SettingsControllerDelegate {
+class MainController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
     
     //MARK: - Views
     
@@ -26,18 +26,26 @@ class MainController: UIViewController, SettingsControllerDelegate {
         
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
-        setupLayout()
         
+        setupLayout()
         fetchFilteredUser()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if Auth.auth().currentUser == nil {
+
             let registrationController = RegistrationController()
+            registrationController.delegate = self
             let navigationController = UINavigationController(rootViewController: registrationController)
             navigationController.modalPresentationStyle = .fullScreen
             present(navigationController, animated: true)
         }
+        view.reloadInputViews()
+    }
+    
+    func didFinishLoggingIn() {
+        fetchFilteredUser()
     }
     
     fileprivate let hud = JGProgressHUD(style: .dark)
@@ -65,7 +73,9 @@ class MainController: UIViewController, SettingsControllerDelegate {
     fileprivate func fetchUsersFromFirestore() {
         
         guard let minAge = user?.minSearchAge, let maxAge = user?.maxSearchAge else { return }
+        
         let ageFilterQuery = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
+        
         ageFilterQuery.getDocuments { (snapshot, err) in
             self.hud.dismiss()
             if let err = err {
@@ -85,22 +95,10 @@ class MainController: UIViewController, SettingsControllerDelegate {
     
     fileprivate func setupCardFromUser(user: User) {
         let cardView = CardView(frame: .zero)
-        
         cardView.cardViewModel = user.toCardViewModel()
         cardsDeckView.addSubview(cardView)
         cardsDeckView.sendSubviewToBack(cardView)
         cardView.fillSuperview()
-    }
-    
-    fileprivate func setupDummyCards() {
-        
-        cardViewModels.forEach { (cardVM) in
-            let cardView = CardView(frame: .zero)
-            
-            cardView.cardViewModel = cardVM
-            cardsDeckView.addSubview(cardView)
-            cardView.fillSuperview()
-        }
     }
     
     fileprivate func setupLayout() {

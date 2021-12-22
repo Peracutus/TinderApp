@@ -23,6 +23,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     var delegate: SettingsControllerDelegate?
     
     //instance properties
+    
     lazy var headerImage1 = customButton(selector: #selector(handleSelectPhoto))
     lazy var headerImage2 = customButton(selector: #selector(handleSelectPhoto))
     lazy var headerImage3 = customButton(selector: #selector(handleSelectPhoto))
@@ -308,10 +309,15 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     @objc fileprivate func handleSelectPhoto(button: UIButton) {
-        let imagePicker = CustomImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.imageButton = button
-        present(imagePicker, animated: true)
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+            DispatchQueue.main.async {
+                let imagePicker = CustomImagePickerController()
+                imagePicker.delegate = self
+                imagePicker.imageButton = button
+                self.present(imagePicker, animated: true)
+            }
+        }
     }
     
     @objc fileprivate func handleCancel() {
