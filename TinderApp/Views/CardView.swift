@@ -8,18 +8,22 @@
 import UIKit
 import SDWebImage
 
+protocol CardViewDelegate {
+    func didTapMoreInfo()
+}
+
 class CardView: UIView {
+    
+    var delegate: CardViewDelegate?
     
     var cardViewModel: CardViewModel! {
         didSet {
             
             let imageName = cardViewModel.imageNames.first ?? ""
-//            imageView.image = UIImage(named: imageName)
-            //load  our image using url instead
+
             if let url = URL(string: imageName) {
                 imageView.sd_setImage(with: url)
             }
-            
             
             infoLabel.attributedText = cardViewModel.attributedString
             infoLabel.textAlignment = cardViewModel.textAlignment
@@ -77,6 +81,18 @@ class CardView: UIView {
 
     }
     
+    fileprivate let moreInfoButton: UIButton = {
+        let but = UIButton(type: .system)
+        but.setImage(UIImage(named: "info_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        but.addTarget(self, action: #selector(handleMoreInfo), for: .touchUpInside)
+        return but
+    }()
+    
+    @objc fileprivate func handleMoreInfo() {
+        delegate?.didTapMoreInfo()
+        //use
+    }
+    
     fileprivate func setupLayout() {
         //customizating
         layer.cornerRadius = 10
@@ -95,6 +111,9 @@ class CardView: UIView {
         infoLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
         infoLabel.textColor = .white
         infoLabel.numberOfLines = 0
+        
+        addSubview(moreInfoButton)
+        moreInfoButton.anchor(top: nil, leading: nil, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 16, right: 16 ), size: .init(width: 44, height: 44))
     }
     
     fileprivate let barsStackView = UIStackView()
@@ -137,12 +156,7 @@ class CardView: UIView {
     
     fileprivate func handleChanged(_ gesture: UIPanGestureRecognizer) {
         let translation = gesture.translation(in: nil) //shows image location by swiping
-        //rotation with bug
-        
-        //        let degrees: CGFloat = translation.x / 20
-        //        let angle = degrees * .pi / 180
-        //        let rotationalTransformation = CGAffineTransform(rotationAngle: angle)
-        //        self.transform = rotationalTransformation.translatedBy(x: translation.x, y: translation.y)
+
         
         self.transform = CGAffineTransform(translationX: translation.x, y: translation.y)
     }

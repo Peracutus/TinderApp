@@ -281,7 +281,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         let docData: [String : Any] = [
             "uid": uid,
             "fullName": user?.name ?? "",
-            "age": user?.age ??  -1,
+            "age": user?.age ??  0,
             "imageUrl1": user?.imageUrl1 ?? "",
             "imageUrl2": user?.imageUrl2 ?? "",
             "imageUrl3": user?.imageUrl3 ?? "",

@@ -9,7 +9,8 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-class MainController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
+class MainController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate {
+
     
     //MARK: - Views
     
@@ -86,19 +87,28 @@ class MainController: UIViewController, SettingsControllerDelegate, LoginControl
             snapshot?.documents.forEach({ (documentSnapshot) in
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
-                self.cardViewModels.append(user.toCardViewModel())
-                self.lastFetchedUser = user
-                self.setupCardFromUser(user: user)
+                if user.uid != Auth.auth().currentUser?.uid {
+                    self.setupCardFromUser(user: user)
+                }
+//                self.cardViewModels.append(user.toCardViewModel())
+//                self.lastFetchedUser = user
             })
         }
     }
     
     fileprivate func setupCardFromUser(user: User) {
         let cardView = CardView(frame: .zero)
+        cardView.delegate = self
         cardView.cardViewModel = user.toCardViewModel()
         cardsDeckView.addSubview(cardView)
         cardsDeckView.sendSubviewToBack(cardView)
         cardView.fillSuperview()
+    }
+    
+    func didTapMoreInfo() {
+        print("delegate work")
+        let userDetailsController = UserDetailsViewController()
+        present(userDetailsController, animated: true, completion: nil)
     }
     
     fileprivate func setupLayout() {

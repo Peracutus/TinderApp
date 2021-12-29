@@ -52,7 +52,8 @@ class RegistrationController: UIViewController {
     
     let loginButton = UIButton(title: "Log In", color: .white, size: 16)
     
-    //MARK: - App lifeCycle
+    //MARK: - VC LifeCycle
+    
     let registeringHUD = JGProgressHUD(style: .dark)
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,7 +74,7 @@ class RegistrationController: UIViewController {
         registrationButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
         loginButton.addTarget(self, action: #selector(handleLogIn), for: .touchUpInside)
     }
-     
+    
     //MARK: - Fileprivate
     fileprivate let registrationViewModel = RegistrationViewModel()
     
@@ -90,7 +91,7 @@ class RegistrationController: UIViewController {
     }
     
     fileprivate func setupLayout() {
-
+        
         stackView.axis = .vertical
         selectImageButton.widthAnchor.constraint(equalToConstant: 275).isActive = true
         passwordTextField.isSecureTextEntry = true
@@ -116,7 +117,7 @@ class RegistrationController: UIViewController {
         registrationViewModel.bindableIsFormValid.bind { [unowned self] (isFormValid) in
             
             guard let isFormValid = isFormValid else { return }
-
+            
             self.registrationButton.isEnabled = isFormValid
             
             if isFormValid {
@@ -164,9 +165,14 @@ class RegistrationController: UIViewController {
     }
     
     @objc fileprivate func handleSelectImage() {
-        let imagePicker = UIImagePickerController()
-        present(imagePicker, animated: true)
-        imagePicker.delegate = self
+        let queue = DispatchQueue.global(qos: .utility)
+        queue.async {
+            DispatchQueue.main.async {
+                let imagePicker = UIImagePickerController()
+                self.present(imagePicker, animated: true)
+                imagePicker.delegate = self
+            }
+        }
     }
     
     @objc fileprivate func handleRegister() {
@@ -174,8 +180,8 @@ class RegistrationController: UIViewController {
         
         registrationViewModel.performRegistration { [weak self] (err) in
             if let err = err {
-            self?.showHudWithError(error: err)
-            return
+                self?.showHudWithError(error: err)
+                return
             }
             print("Finished registering user")
             self?.dismiss(animated: true, completion: {
@@ -192,10 +198,12 @@ class RegistrationController: UIViewController {
         hud.show(in: self.view)
         hud.dismiss(afterDelay: 4)
     }
-
+    
+    //MARK: - Selectors
+    
     @objc fileprivate func handleTapDismiss() {
         self.view.endEditing(true) //dismisses keyboard
-       
+        
     }
     
     @objc fileprivate func handleKeyboardHide(notification: Notification) {
@@ -217,7 +225,7 @@ class RegistrationController: UIViewController {
         self.view.transform = CGAffineTransform(translationX: 0, y: -difference - 8)
     }
     
-        //MARK: - create gradient layer with rotation changing
+    //MARK: - create gradient layer with rotation changing
     
     fileprivate let gradientLayer = CAGradientLayer()
     
@@ -235,6 +243,8 @@ class RegistrationController: UIViewController {
         view.layer.addSublayer(gradientLayer)
     }
 }
+
+//MARK: - Extensions
 
 extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
